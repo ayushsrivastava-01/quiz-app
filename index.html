@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Stormy | Interactive Learning Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="icon.png">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-brain"></i>
+                    <h1>Brain Stormy <span class="logo-highlight">Pro</span></h1>
+                </div>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="#" id="leaderboard-btn"><i class="fas fa-trophy"></i> Leaderboard</a></li>
+                        <li><a href="#" id="profile-btn"><i class="fas fa-user"></i> Profile</a></li>
+                        <li><button class="btn-theme" id="theme-toggle"><i class="fas fa-moon"></i></button></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Welcome Screen -->
+            <section class="welcome-screen" id="welcome-screen">
+                <div class="welcome-content">
+                    <div class="welcome-text">
+                        <h2>Challenge Your Knowledge</h2>
+                        <p>Test yourself with thousands of questions across various categories. Compete with friends, track your progress, and become a QuizMaster!</p>
+                        <div class="stats-overview">
+                            <div class="stat-item">
+                                <i class="fas fa-question-circle"></i>
+                                <div>
+                                    <h3>2,500+</h3>
+                                    <p>Questions</p>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-users"></i>
+                                <div>
+                                    <h3>10,000+</h3>
+                                    <p>Players</p>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-chart-line"></i>
+                                <div>
+                                    <h3>95%</h3>
+                                    <p>Satisfaction</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="welcome-actions">
+                        <button class="btn-primary btn-large" id="start-quiz-btn">
+                            <i class="fas fa-play"></i> Start New Quiz
+                        </button>
+                        <button class="btn-secondary" id="continue-btn">
+                            <i class="fas fa-redo"></i> Continue Last Quiz
+                        </button>
+                        <div class="quick-settings">
+                            <h4><i class="fas fa-cogs"></i> Quick Settings</h4>
+                            <div class="setting-option">
+                                <span>Questions per quiz:</span>
+                                <select id="question-count">
+                                    <option value="5">5</option>
+                                    <option value="10" selected>10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                </select>
+                            </div>
+                            <div class="setting-option">
+                                <span>Time per question:</span>
+                                <select id="time-limit">
+                                    <option value="15">15 seconds</option>
+                                    <option value="30" selected>30 seconds</option>
+                                    <option value="45">45 seconds</option>
+                                    <option value="60">60 seconds</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Category Selection -->
+            <section class="category-selection hidden" id="category-screen">
+                <div class="section-header">
+                    <h2><i class="fas fa-layer-group"></i> Select Category</h2>
+                    <p>Choose from our diverse collection of quiz categories</p>
+                </div>
+                <div class="categories-grid" id="categories-container">
+                    <!-- Categories will be populated by JavaScript -->
+                </div>
+                <div class="selection-actions">
+                    <button class btn-secondary id="back-to-home">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <button class="btn-primary" id="start-category-quiz">
+                        Start Quiz <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Quiz Screen -->
+            <section class="quiz-screen hidden" id="quiz-screen">
+                <div class="quiz-header">
+                    <div class="quiz-info">
+                        <div class="quiz-category-badge" id="quiz-category">
+                            <i class="fas fa-globe"></i> <span>Geography</span>
+                        </div>
+                        <div class="quiz-timer" id="quiz-timer">
+                            <i class="fas fa-clock"></i> <span id="timer-display">30</span>s
+                        </div>
+                    </div>
+                    <div class="quiz-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                        <div class="progress-text">
+                            Question <span id="current-question">1</span> of <span id="total-questions">10</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quiz-content">
+                    <div class="question-container">
+                        <div class="question-header">
+                            <span class="question-difficulty" id="question-difficulty">Medium</span>
+                            <span class="question-points"><i class="fas fa-star"></i> <span id="question-points">10</span> points</span>
+                        </div>
+                        <h2 class="question-text" id="question-text">Which country is known as the Land of the Rising Sun?</h2>
+                        <div class="question-hint hidden" id="question-hint">
+                            <i class="fas fa-lightbulb"></i> <span id="hint-text">Hint: This country's flag features a red circle on a white background</span>
+                        </div>
+                    </div>
+
+                    <div class="answers-container" id="answers-container">
+                        <!-- Answers will be populated by JavaScript -->
+                    </div>
+
+                    <div class="quiz-controls">
+                        <button class="btn-secondary" id="hint-btn">
+                            <i class="fas fa-lightbulb"></i> Show Hint
+                        </button>
+                        <button class="btn-warning" id="skip-btn">
+                            <i class="fas fa-forward"></i> Skip Question
+                        </button>
+                        <button class="btn-primary hidden" id="next-btn">
+                            Next Question <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+
+                    <div class="quiz-stats">
+                        <div class="stat-card">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <h4>Correct</h4>
+                                <p id="correct-count">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-times-circle"></i>
+                            <div>
+                                <h4>Incorrect</h4>
+                                <p id="incorrect-count">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-star"></i>
+                            <div>
+                                <h4>Score</h4>
+                                <p id="current-score">0</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-bolt"></i>
+                            <div>
+                                <h4>Streak</h4>
+                                <p id="streak-count">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Screen -->
+            <section class="results-screen hidden" id="results-screen">
+                <div class="results-header">
+                    <h2><i class="fas fa-trophy"></i> Quiz Completed!</h2>
+                    <p>Great job completing the quiz! Here's how you performed:</p>
+                </div>
+
+                <div class="results-content">
+                    <div class="score-card">
+                        <div class="score-display">
+                            <div class="score-circle">
+                                <svg class="progress-ring" width="200" height="200">
+                                    <circle class="progress-ring-circle" stroke-width="12" fill="transparent" r="90" cx="100" cy="100"/>
+                                </svg>
+                                <div class="score-percentage" id="score-percentage">85%</div>
+                            </div>
+                            <div class="score-details">
+                                <h3>Your Score</h3>
+                                <div class="score-breakdown">
+                                    <div class="breakdown-item">
+                                        <span>Correct Answers:</span>
+                                        <span id="final-correct">8</span>
+                                    </div>
+                                    <div class="breakdown-item">
+                                        <span>Total Questions:</span>
+                                        <span id="final-total">10</span>
+                                    </div>
+                                    <div class="breakdown-item">
+                                        <span>Time Taken:</span>
+                                        <span id="time-taken">2:45</span>
+                                    </div>
+                                    <div class="breakdown-item highlight">
+                                        <span>Final Score:</span>
+                                        <span id="final-score">850</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="achievements">
+                        <h3><i class="fas fa-award"></i> Achievements Unlocked</h3>
+                        <div class="achievements-list" id="achievements-list">
+                            <!-- Achievements will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <div class="results-actions">
+                        <button class="btn-secondary" id="review-answers-btn">
+                            <i class="fas fa-chart-bar"></i> Review Answers
+                        </button>
+                        <button class="btn-primary" id="play-again-btn">
+                            <i class="fas fa-redo"></i> Play Again
+                        </button>
+                        <button class="btn-success" id="share-results-btn">
+                            <i class="fas fa-share-alt"></i> Share Results
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Leaderboard Modal -->
+            <div class="modal hidden" id="leaderboard-modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3><i class="fas fa-trophy"></i> Global Leaderboard</h3>
+                        <button class="close-modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="leaderboard-tabs">
+                            <button class="tab active" data-period="daily">Today</button>
+                            <button class="tab" data-period="weekly">This Week</button>
+                            <button class="tab" data-period="monthly">This Month</button>
+                            <button class="tab" data-period="all">All Time</button>
+                        </div>
+                        <div class="leaderboard-list" id="leaderboard-list">
+                            <!-- Leaderboard entries will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Modal -->
+            <div class="modal hidden" id="profile-modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3><i class="fas fa-user"></i> Your Profile</h3>
+                        <button class="close-modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="profile-info">
+                            <div class="profile-avatar">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div class="profile-details">
+                                <h4 id="profile-name">Quiz Player</h4>
+                                <p id="profile-level">Level 5 Quiz Master</p>
+                                <div class="profile-stats">
+                                    <div class="profile-stat">
+                                        <i class="fas fa-star"></i>
+                                        <span id="profile-score">2,450</span> points
+                                    </div>
+                                    <div class="profile-stat">
+                                        <i class="fas fa-check"></i>
+                                        <span id="profile-quizzes">48</span> quizzes
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="profile-progress">
+                            <h4>Progress to Next Level</h4>
+                            <div class="level-progress">
+                                <div class="level-bar">
+                                    <div class="level-fill" style="width: 65%"></div>
+                                </div>
+                                <span>65%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Brain Stormy Pro</h4>
+                    <p>Enhance your knowledge with our interactive quiz platform. Learning has never been this fun!</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Categories</a></li>
+                        <li><a href="#">Leaderboard</a></li>
+                        <li><a href="#">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect With Us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Brain Stormy Pro. | All rights reserved. | Developed by <b style="color: rgb(244, 218, 27);">Ayush Srivastava</b> | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            </div>
+        </footer>
+
+        <!-- Notification Toast -->
+        <div class="toast hidden" id="toast">
+            <div class="toast-content">
+                <i class="fas fa-check-circle"></i>
+                <span class="toast-message">Answer submitted successfully!</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
