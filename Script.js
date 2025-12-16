@@ -35,8 +35,6 @@ const leaderboardModal = document.getElementById('leaderboard-modal');
 const profileModal = document.getElementById('profile-modal');
 const closeLeaderboard = document.getElementById('close-leaderboard');
 const closeProfile = document.getElementById('close-profile');
-const leaderboardOverlay = document.getElementById('leaderboard-overlay');
-const profileOverlay = document.getElementById('profile-overlay');
 
 // Quiz elements
 const categoriesContainer = document.getElementById('categories-container');
@@ -81,440 +79,6 @@ const toastClose = document.querySelector('.toast-close');
 // Navigation links
 const homeNav = document.getElementById('home-nav');
 
-// Quiz Data Database
-const quizData = {
-    categories: [
-        {
-            id: 'history',
-            name: 'History',
-            icon: 'fas fa-landmark',
-            description: 'Journey through time and explore historical events',
-            questionCount: 150,
-            color: '#FF6B6B',
-            colorLight: '#FF8E8E'
-        },
-        {
-            id: 'geography',
-            name: 'Geography',
-            icon: 'fas fa-globe-americas',
-            description: 'Discover countries, capitals, and landmarks',
-            questionCount: 200,
-            color: '#4ECDC4',
-            colorLight: '#6BE3DB'
-        },
-        {
-            id: 'science',
-            name: 'Science',
-            icon: 'fas fa-flask',
-            description: 'Explore physics, chemistry, and biology',
-            questionCount: 180,
-            color: '#45B7D1',
-            colorLight: '#5FD1F0'
-        },
-        {
-            id: 'technology',
-            name: 'Technology',
-            icon: 'fas fa-laptop-code',
-            description: 'Computers, programming, and digital innovations',
-            questionCount: 120,
-            color: '#96CEB4',
-            colorLight: '#B4E6CA'
-        },
-        {
-            id: 'sports',
-            name: 'Sports',
-            icon: 'fas fa-futbol',
-            description: 'Athletics, teams, and sporting events',
-            questionCount: 100,
-            color: '#FFEAA7',
-            colorLight: '#FFF4D1'
-        },
-        {
-            id: 'entertainment',
-            name: 'Entertainment',
-            icon: 'fas fa-film',
-            description: 'Movies, music, and pop culture',
-            questionCount: 160,
-            color: '#DDA0DD',
-            colorLight: '#E8C2E8'
-        },
-        {
-            id: 'literature',
-            name: 'Literature',
-            icon: 'fas fa-book',
-            description: 'Books, authors, and literary works',
-            questionCount: 90,
-            color: '#F8C291',
-            colorLight: '#FAD4B0'
-        },
-        {
-            id: 'general',
-            name: 'General Knowledge',
-            icon: 'fas fa-brain',
-            description: 'Mixed bag of interesting facts',
-            questionCount: 250,
-            color: '#6C5CE7',
-            colorLight: '#8A7EEC'
-        }
-    ],
-    
-    questions: {
-        history: [
-            {
-                question: "Who is known as the father of plastic surgery?",
-                answers: [
-                    { text: "Nagarjuna", correct: false },
-                    { text: "Sushruta", correct: true },
-                    { text: "Ashoka", correct: false },
-                    { text: "Aryabhatta", correct: false }
-                ],
-                difficulty: "medium",
-                points: 15,
-                hint: "He was an ancient Indian physician and one of the earliest known medical researchers.",
-                explanation: "Sushruta, who lived around 600 BCE, is considered the father of plastic surgery and wrote the Sushruta Samhita."
-            },
-            {
-                question: "Who was India's first Prime Minister?",
-                answers: [
-                    { text: "Mahatma Gandhi", correct: false },
-                    { text: "Chandra Shekhar Azad", correct: false },
-                    { text: "Pt. Jawaharlal Nehru", correct: true },
-                    { text: "Dr. Rajendra Prasad", correct: false }
-                ],
-                difficulty: "easy",
-                points: 10,
-                hint: "He served as Prime Minister from 1947 until his death in 1964.",
-                explanation: "Jawaharlal Nehru became India's first Prime Minister after independence in 1947."
-            },
-            {
-                question: "Which ancient civilization built the pyramids of Giza?",
-                answers: [
-                    { text: "Ancient Greeks", correct: false },
-                    { text: "Ancient Egyptians", correct: true },
-                    { text: "Romans", correct: false },
-                    { text: "Persians", correct: false }
-                ],
-                difficulty: "easy",
-                points: 10,
-                hint: "This civilization developed along the Nile River in Northeast Africa.",
-                explanation: "The ancient Egyptians built the pyramids as tombs for their pharaohs."
-            },
-            {
-                question: "In which year did World War II end?",
-                answers: [
-                    { text: "1943", correct: false },
-                    { text: "1945", correct: true },
-                    { text: "1947", correct: false },
-                    { text: "1950", correct: false }
-                ],
-                difficulty: "medium",
-                points: 15,
-                hint: "The war ended after the surrender of Japan following atomic bombings.",
-                explanation: "World War II ended in 1945 with the surrender of Germany in May and Japan in September."
-            },
-            {
-                question: "Who discovered penicillin?",
-                answers: [
-                    { text: "Marie Curie", correct: false },
-                    { text: "Alexander Fleming", correct: true },
-                    { text: "Louis Pasteur", correct: false },
-                    { text: "Robert Koch", correct: false }
-                ],
-                difficulty: "medium",
-                points: 15,
-                hint: "He discovered it accidentally when he noticed mold inhibiting bacterial growth.",
-                explanation: "Alexander Fleming discovered penicillin in 1928, revolutionizing medicine."
-            }
-        ],
-        
-        geography: [
-            {
-                question: "Which is the world's largest continent?",
-                answers: [
-                    { text: "Europe", correct: false },
-                    { text: "Australia", correct: false },
-                    { text: "Asia", correct: true },
-                    { text: "Antarctica", correct: false }
-                ],
-                difficulty: "easy",
-                points: 10,
-                hint: "It contains countries like China, India, and Russia.",
-                explanation: "Asia is the largest continent covering about 30% of Earth's land area."
-            },
-            {
-                question: "Which country is the world's most populous country?",
-                answers: [
-                    { text: "India", correct: true },
-                    { text: "China", correct: false },
-                    { text: "Australia", correct: false },
-                    { text: "America", correct: false }
-                ],
-                difficulty: "medium",
-                points: 15,
-                hint: "This country is located in South Asia and has over 1.4 billion people.",
-                explanation: "India surpassed China as the world's most populous country in 2023."
-            },
-            {
-                question: "What is the longest river in the world?",
-                answers: [
-                    { text: "Amazon River", correct: false },
-                    { text: "Nile River", correct: true },
-                    { text: "Yangtze River", correct: false },
-                    { text: "Mississippi River", correct: false }
-                ],
-                difficulty: "medium",
-                points: 15,
-                hint: "This river flows through northeastern Africa.",
-                explanation: "The Nile River is approximately 6,650 km (4,130 miles) long."
-            },
-            {
-                question: "Which is the smallest country in the world?",
-                answers: [
-                    { text: "Monaco", correct: false },
-                    { text: "Vatican City", correct: true },
-                    { text: "San Marino", correct: false },
-                    { text: "Liechtenstein", correct: false }
-                ],
-                difficulty: "medium",
-                points: 15,
-                hint: "It is located within Rome, Italy.",
-                explanation: "Vatican City covers only 0.49 square kilometers (0.19 square miles)."
-            },
-            {
-                question: "Which desert is the largest in the world?",
-                answers: [
-                    { text: "Sahara Desert", correct: true },
-                    { text: "Arabian Desert", correct: false },
-                    { text: "Gobi Desert", correct: false },
-                    { text: "Kalahari Desert", correct: false }
-                ],
-                difficulty: "easy",
-                points: 10,
-                hint: "This desert covers much of North Africa.",
-                explanation: "The Sahara Desert covers approximately 9.2 million square kilometers."
-            }
-        ],
-        
-        science: [
-            {
-                question: "What is the chemical symbol for gold?",
-                answers: [
-                    { text: "Go", correct: false },
-                    { text: "Gd", correct: false },
-                    { text: "Au", correct: true },
-                    { text: "Ag", correct: false }
-                ],
-                difficulty: "easy",
-                points: 10,
-                hint: "It comes from the Latin word 'aurum'.",
-                explanation: "The symbol Au comes from the Latin word 'aurum' meaning gold."
-            },
-            {
-                question: "Which planet is known as the Red Planet?",
-                answers: [
-                    { text: "Venus", correct: false },
-                    { text: "Mars", correct: true },
-                    { text: "Jupiter", correct: false },
-                    { text: "Saturn", correct: false }
-                ],
-                difficulty: "easy",
-                points: 10,
-                hint: "It is the fourth planet from the Sun.",
-                explanation: "Mars appears red due to iron oxide (rust) on its surface."
-            },
-            {
-                question: "What is the hardest natural substance on Earth?",
-                answers: [
-                    { text: "Gold", correct: false },
-                    { text: "Iron", correct: false },
-                    { text: "Diamond", correct: true },
-                    { text: "Platinum", correct: false }
-                ],
-                difficulty: "easy",
-                points: 10,
-                hint: "It is a form of carbon and is used in jewelry.",
-                explanation: "Diamond scores 10 on the Mohs hardness scale, the highest possible."
-            },
-            {
-                question: "What is the atomic number of carbon?",
-                answers: [
-                    { text: "6", correct: true },
-                    { text: "8", correct: false },
-                    { text: "12", correct: false },
-                    { text: "14", correct: false }
-                ],
-                difficulty: "medium",
-                points: 15,
-                hint: "It is the number of protons in a carbon atom.",
-                explanation: "Carbon has 6 protons, hence its atomic number is 6."
-            },
-            {
-                question: "Which gas makes up about 78% of Earth's atmosphere?",
-                answers: [
-                    { text: "Oxygen", correct: false },
-                    { text: "Carbon Dioxide", correct: false },
-                    { text: "Nitrogen", correct: true },
-                    { text: "Hydrogen", correct: false }
-                ],
-                difficulty: "medium",
-                points: 15,
-                hint: "This gas is inert and doesn't support combustion.",
-                explanation: "Nitrogen is the most abundant gas in Earth's atmosphere."
-            }
-        ],
-        
-        general: [
-            {
-                question: "Find the odd one out?",
-                answers: [
-                    { text: "Apple", correct: false },
-                    { text: "Mango", correct: false },
-                    { text: "Grapes", correct: false },
-                    { text: "Potato", correct: true }
-                ],
-                difficulty: "easy",
-                points: 10,
-                hint: "Three of these grow on trees or vines, one grows underground.",
-                explanation: "Potato is a root vegetable while the others are fruits that grow on plants."
-            },
-            {
-                question: "How many continents are there on Earth?",
-                answers: [
-                    { text: "5", correct: false },
-                    { text: "6", correct: false },
-                    { text: "7", correct: true },
-                    { text: "8", correct: false }
-                ],
-                difficulty: "easy",
-                points: 10,
-                hint: "The seven continents are Asia, Africa, North America, South America, Antarctica, Europe, and Australia.",
-                explanation: "There are 7 continents: Asia, Africa, North America, South America, Antarctica, Europe, and Australia."
-            },
-            {
-                question: "What is the capital of France?",
-                answers: [
-                    { text: "London", correct: false },
-                    { text: "Berlin", correct: false },
-                    { text: "Madrid", correct: false },
-                    { text: "Paris", correct: true }
-                ],
-                difficulty: "easy",
-                points: 10,
-                hint: "It is known as the 'City of Light'.",
-                explanation: "Paris is the capital and most populous city of France."
-            },
-            {
-                question: "Which organ in the human body pumps blood?",
-                answers: [
-                    { text: "Liver", correct: false },
-                    { text: "Heart", correct: true },
-                    { text: "Lungs", correct: false },
-                    { text: "Kidneys", correct: false }
-                ],
-                difficulty: "easy",
-                points: 10,
-                hint: "It is located in the chest, slightly to the left.",
-                explanation: "The heart pumps blood throughout the body via the circulatory system."
-            },
-            {
-                question: "What is the largest mammal in the world?",
-                answers: [
-                    { text: "African Elephant", correct: false },
-                    { text: "Blue Whale", correct: true },
-                    { text: "Giraffe", correct: false },
-                    { text: "Polar Bear", correct: false }
-                ],
-                difficulty: "medium",
-                points: 15,
-                hint: "This mammal lives in the ocean.",
-                explanation: "The blue whale can grow up to 100 feet long and weigh 200 tons."
-            }
-        ]
-    },
-    
-    achievements: [
-        {
-            id: 1,
-            name: "First Steps",
-            description: "Complete your first quiz",
-            icon: "fas fa-baby",
-            unlocked: false
-        },
-        {
-            id: 2,
-            name: "Perfect Score",
-            description: "Score 100% on any quiz",
-            icon: "fas fa-star",
-            unlocked: false
-        },
-        {
-            id: 3,
-            name: "Speed Demon",
-            description: "Complete a quiz in under 2 minutes",
-            icon: "fas fa-bolt",
-            unlocked: false
-        },
-        {
-            id: 4,
-            name: "Category Master",
-            description: "Complete all questions in a category",
-            icon: "fas fa-crown",
-            unlocked: false
-        },
-        {
-            id: 5,
-            name: "Streak Champion",
-            description: "Answer 10 questions correctly in a row",
-            icon: "fas fa-fire",
-            unlocked: false
-        }
-    ],
-    
-    leaderboard: [
-        { name: "Alex Johnson", score: 12500, rank: 1 },
-        { name: "Maria Garcia", score: 11800, rank: 2 },
-        { name: "David Smith", score: 11200, rank: 3 },
-        { name: "Emma Wilson", score: 10500, rank: 4 },
-        { name: "James Brown", score: 9800, rank: 5 },
-        { name: "Sophia Miller", score: 9200, rank: 6 },
-        { name: "Michael Davis", score: 8800, rank: 7 },
-        { name: "Olivia Taylor", score: 8500, rank: 8 },
-        { name: "Robert Clark", score: 8200, rank: 9 },
-        { name: "Isabella Martinez", score: 7900, rank: 10 }
-    ]
-};
-
-// User profile data
-let userProfile = {
-    name: "Quiz Player",
-    level: 5,
-    experience: 650,
-    totalScore: 2450,
-    quizzesCompleted: 48,
-    currentStreak: 3,
-    bestStreak: 12,
-    achievementsUnlocked: [1, 3]
-};
-
-// Quiz state
-let quizState = {
-    currentCategory: null,
-    questions: [],
-    currentQuestionIndex: 0,
-    score: 0,
-    correctAnswers: 0,
-    incorrectAnswers: 0,
-    currentStreak: 0,
-    bestStreak: 0,
-    timeTaken: 0,
-    selectedAnswers: [],
-    timer: null,
-    timeLeft: 30,
-    quizStarted: false,
-    quizCompleted: false,
-    startTime: null
-};
-
 // Convert hex to rgb
 function hexToRgb(hex) {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -532,83 +96,112 @@ document.addEventListener('DOMContentLoaded', () => {
     setupEventListeners();
     checkContinueQuiz();
     updateActiveNav();
+    initializeTheme();
 });
 
 // Setup event listeners
 function setupEventListeners() {
     // Navigation
-    startQuizBtn.addEventListener('click', showCategorySelection);
-    backToHomeBtn.addEventListener('click', showWelcomeScreen);
-    startCategoryQuizBtn.addEventListener('click', startSelectedQuiz);
-    nextBtn.addEventListener('click', handleNextQuestion);
-    hintBtn.addEventListener('click', showHint);
-    skipBtn.addEventListener('click', skipQuestion);
-    playAgainBtn.addEventListener('click', playAgain);
-    reviewAnswersBtn.addEventListener('click', reviewAnswers);
-    shareResultsBtn.addEventListener('click', shareResults);
+    if (startQuizBtn) startQuizBtn.addEventListener('click', showCategorySelection);
+    if (backToHomeBtn) backToHomeBtn.addEventListener('click', showWelcomeScreen);
+    if (startCategoryQuizBtn) startCategoryQuizBtn.addEventListener('click', startSelectedQuiz);
+    if (nextBtn) nextBtn.addEventListener('click', handleNextQuestion);
+    if (hintBtn) hintBtn.addEventListener('click', showHint);
+    if (skipBtn) skipBtn.addEventListener('click', skipQuestion);
+    if (playAgainBtn) playAgainBtn.addEventListener('click', playAgain);
+    if (reviewAnswersBtn) reviewAnswersBtn.addEventListener('click', reviewAnswers);
+    if (shareResultsBtn) shareResultsBtn.addEventListener('click', shareResults);
     
     // Mobile menu
-    mobileMenuBtn.addEventListener('click', toggleMobileMenu);
-    mobileHome.addEventListener('click', (e) => {
-        e.preventDefault();
-        showWelcomeScreen();
-        toggleMobileMenu();
-        updateActiveNav();
-    });
-    mobileLeaderboard.addEventListener('click', (e) => {
-        e.preventDefault();
-        showModal('leaderboard');
-        toggleMobileMenu();
-        updateActiveNav();
-    });
-    mobileProfile.addEventListener('click', (e) => {
-        e.preventDefault();
-        showModal('profile');
-        toggleMobileMenu();
-        updateActiveNav();
-    });
-    mobileThemeToggle.addEventListener('click', () => {
-        toggleTheme();
-        toggleMobileMenu();
-    });
+    if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+    if (mobileHome) {
+        mobileHome.addEventListener('click', (e) => {
+            e.preventDefault();
+            showWelcomeScreen();
+            toggleMobileMenu();
+            updateActiveNav();
+        });
+    }
+    if (mobileLeaderboard) {
+        mobileLeaderboard.addEventListener('click', (e) => {
+            e.preventDefault();
+            showModal('leaderboard');
+            toggleMobileMenu();
+            updateActiveNav();
+        });
+    }
+    if (mobileProfile) {
+        mobileProfile.addEventListener('click', (e) => {
+            e.preventDefault();
+            showModal('profile');
+            toggleMobileMenu();
+            updateActiveNav();
+        });
+    }
+    if (mobileThemeToggle) {
+        mobileThemeToggle.addEventListener('click', () => {
+            toggleTheme();
+            toggleMobileMenu();
+        });
+    }
     
     // Footer links
-    footerCategories.addEventListener('click', (e) => {
-        e.preventDefault();
-        showCategorySelection();
-        updateActiveNav();
-    });
-    footerLeaderboard.addEventListener('click', (e) => {
-        e.preventDefault();
-        showModal('leaderboard');
-        updateActiveNav();
-    });
+    if (footerCategories) {
+        footerCategories.addEventListener('click', (e) => {
+            e.preventDefault();
+            showCategorySelection();
+            updateActiveNav();
+        });
+    }
+    if (footerLeaderboard) {
+        footerLeaderboard.addEventListener('click', (e) => {
+            e.preventDefault();
+            showModal('leaderboard');
+            updateActiveNav();
+        });
+    }
     
     // Home navigation
-    homeNav.addEventListener('click', (e) => {
-        e.preventDefault();
-        showWelcomeScreen();
-        updateActiveNav();
-    });
+    if (homeNav) {
+        homeNav.addEventListener('click', (e) => {
+            e.preventDefault();
+            showWelcomeScreen();
+            updateActiveNav();
+        });
+    }
     
     // Modals
-    leaderboardBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        showModal('leaderboard');
-        updateActiveNav();
-    });
-    profileBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        showModal('profile');
-        updateActiveNav();
-    });
-    themeToggle.addEventListener('click', toggleTheme);
+    if (leaderboardBtn) {
+        leaderboardBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            showModal('leaderboard');
+            updateActiveNav();
+        });
+    }
+    if (profileBtn) {
+        profileBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            showModal('profile');
+            updateActiveNav();
+        });
+    }
+    if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
     
     // Modal close buttons
-    closeLeaderboard.addEventListener('click', closeAllModals);
-    closeProfile.addEventListener('click', closeAllModals);
-    leaderboardOverlay.addEventListener('click', closeAllModals);
-    profileOverlay.addEventListener('click', closeAllModals);
+    if (closeLeaderboard) closeLeaderboard.addEventListener('click', closeAllModals);
+    if (closeProfile) closeProfile.addEventListener('click', closeAllModals);
+    
+    // Close modals when clicking outside
+    document.addEventListener('click', (e) => {
+        if (leaderboardModal && leaderboardModal.classList.contains('active') && 
+            e.target === leaderboardModal.querySelector('.modal-overlay')) {
+            closeAllModals();
+        }
+        if (profileModal && profileModal.classList.contains('active') && 
+            e.target === profileModal.querySelector('.modal-overlay')) {
+            closeAllModals();
+        }
+    });
     
     // Tab switching in leaderboard
     document.querySelectorAll('.tab').forEach(tab => {
@@ -620,16 +213,29 @@ function setupEventListeners() {
     });
     
     // Toast close
-    toastClose.addEventListener('click', () => {
-        toast.classList.add('hidden');
-    });
+    if (toastClose) {
+        toastClose.addEventListener('click', () => {
+            toast.classList.add('hidden');
+        });
+    }
     
     // Close toast after 5 seconds
-    toast.addEventListener('animationend', () => {
-        setTimeout(() => {
-            toast.classList.add('hidden');
-        }, 5000);
-    });
+    if (toast) {
+        toast.addEventListener('animationend', () => {
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 5000);
+        });
+    }
+    
+    // Close mobile menu when clicking on overlay (if any)
+    if (mobileMenu) {
+        mobileMenu.addEventListener('click', (e) => {
+            if (e.target === mobileMenu) {
+                toggleMobileMenu();
+            }
+        });
+    }
 }
 
 // Update active navigation
@@ -643,21 +249,23 @@ function updateActiveNav() {
     });
     
     // Add active class based on current screen
-    if (!categoryScreen.classList.contains('hidden-screen') && !categoryScreen.classList.contains('hidden')) {
-        homeNav.classList.add('active');
-        mobileHome.classList.add('active');
-    } else if (!quizScreen.classList.contains('hidden-screen') && !quizScreen.classList.contains('hidden')) {
+    if (!categoryScreen.classList.contains('hidden-screen')) {
+        if (homeNav) homeNav.classList.add('active');
+        if (mobileHome) mobileHome.classList.add('active');
+    } else if (!quizScreen.classList.contains('hidden-screen')) {
         // No active nav for quiz screen
-    } else if (!resultsScreen.classList.contains('hidden-screen') && !resultsScreen.classList.contains('hidden')) {
+    } else if (!resultsScreen.classList.contains('hidden-screen')) {
         // No active nav for results screen
     } else {
-        homeNav.classList.add('active');
-        mobileHome.classList.add('active');
+        if (homeNav) homeNav.classList.add('active');
+        if (mobileHome) mobileHome.classList.add('active');
     }
 }
 
 // Initialize categories
 function initializeCategories() {
+    if (!categoriesContainer) return;
+    
     categoriesContainer.innerHTML = '';
     
     quizData.categories.forEach(category => {
@@ -694,14 +302,16 @@ function initializeCategories() {
             });
             categoryCard.classList.add('selected');
             quizState.currentCategory = category.id;
+            console.log('Selected category:', category.id);
         });
         
         categoriesContainer.appendChild(categoryCard);
     });
     
     // Select first category by default
-    if (document.querySelector('.category-card')) {
-        document.querySelector('.category-card').classList.add('selected');
+    const firstCategoryCard = document.querySelector('.category-card');
+    if (firstCategoryCard) {
+        firstCategoryCard.classList.add('selected');
         quizState.currentCategory = quizData.categories[0].id;
     }
 }
@@ -712,7 +322,7 @@ function getCategoryDifficulty(categoryId) {
         'history': 'Medium',
         'geography': 'Medium',
         'science': 'Medium',
-        'technology': 'Hard',
+        'technology': 'Medium',
         'sports': 'Easy',
         'entertainment': 'Easy',
         'literature': 'Medium',
@@ -723,8 +333,19 @@ function getCategoryDifficulty(categoryId) {
 
 // Toggle mobile menu
 function toggleMobileMenu() {
+    if (!mobileMenu) return;
+    
     mobileMenu.classList.toggle('active');
     document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+    
+    // Close mobile menu when clicking on a link
+    const mobileLinks = mobileMenu.querySelectorAll('.mobile-menu-link');
+    mobileLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    });
 }
 
 // Show category selection
@@ -733,6 +354,7 @@ function showCategorySelection() {
     categoryScreen.classList.remove('hidden-screen');
     categoryScreen.classList.add('active-screen');
     updateActiveNav();
+    console.log('Showing category selection');
 }
 
 // Show welcome screen
@@ -741,21 +363,32 @@ function showWelcomeScreen() {
     welcomeScreen.classList.remove('hidden-screen');
     welcomeScreen.classList.add('active-screen');
     updateActiveNav();
+    console.log('Showing welcome screen');
 }
 
 // Hide all screens
 function hideAllScreens() {
     const screens = [welcomeScreen, categoryScreen, quizScreen, resultsScreen];
     screens.forEach(screen => {
-        screen.classList.add('hidden-screen');
-        screen.classList.remove('active-screen');
+        if (screen) {
+            screen.classList.add('hidden-screen');
+            screen.classList.remove('active-screen');
+        }
     });
 }
 
 // Start selected quiz
 function startSelectedQuiz() {
+    console.log('Starting quiz for category:', quizState.currentCategory);
+    
     if (!quizState.currentCategory) {
         showToast('Please select a category first!', 'warning');
+        return;
+    }
+    
+    // Check if category has questions
+    if (!quizData.questions[quizState.currentCategory]) {
+        showToast(`No questions available for ${quizState.currentCategory} category!`, 'error');
         return;
     }
     
@@ -769,11 +402,13 @@ function startSelectedQuiz() {
     
     // Get questions for selected category
     quizState.questions = [...quizData.questions[quizState.currentCategory]];
+    console.log(`Found ${quizState.questions.length} questions for ${quizState.currentCategory}`);
     
     // Filter by difficulty if not "mixed"
     const difficulty = difficultySelect.value;
     if (difficulty !== 'mixed') {
         quizState.questions = quizState.questions.filter(q => q.difficulty === difficulty);
+        console.log(`After difficulty filter: ${quizState.questions.length} questions`);
     }
     
     // Shuffle and limit questions
@@ -792,10 +427,14 @@ function startSelectedQuiz() {
     
     // Set quiz info
     const category = quizData.categories.find(c => c.id === quizState.currentCategory);
-    quizCategory.innerHTML = `<i class="${category.icon}"></i> <span>${category.name}</span>`;
-    quizCategory.style.background = `linear-gradient(135deg, ${category.color}, ${category.colorLight})`;
+    if (category && quizCategory) {
+        quizCategory.innerHTML = `<i class="${category.icon}"></i> <span>${category.name}</span>`;
+        quizCategory.style.background = `linear-gradient(135deg, ${category.color}, ${category.colorLight})`;
+    }
     
-    totalQuestionsEl.textContent = quizState.questions.length;
+    if (totalQuestionsEl) {
+        totalQuestionsEl.textContent = quizState.questions.length;
+    }
     
     // Start the quiz
     loadQuestion();
@@ -825,57 +464,68 @@ function resetQuizState() {
     }
     
     // Update UI
-    correctCountEl.textContent = '0';
-    incorrectCountEl.textContent = '0';
-    currentScoreEl.textContent = '0';
-    streakCountEl.textContent = '0';
-    progressFill.style.width = '0%';
-    progressPercentage.textContent = '0%';
+    if (correctCountEl) correctCountEl.textContent = '0';
+    if (incorrectCountEl) incorrectCountEl.textContent = '0';
+    if (currentScoreEl) currentScoreEl.textContent = '0';
+    if (streakCountEl) streakCountEl.textContent = '0';
+    if (progressFill) progressFill.style.width = '0%';
+    if (progressPercentage) progressPercentage.textContent = '0%';
 }
 
 // Load question
 function loadQuestion() {
     const currentQuestion = quizState.questions[quizState.currentQuestionIndex];
     
+    if (!currentQuestion) {
+        console.error('No question found at index:', quizState.currentQuestionIndex);
+        return;
+    }
+    
     // Update question info
-    currentQuestionEl.textContent = quizState.currentQuestionIndex + 1;
-    questionText.textContent = currentQuestion.question;
-    questionDifficulty.textContent = currentQuestion.difficulty.charAt(0).toUpperCase() + currentQuestion.difficulty.slice(1);
-    questionDifficulty.className = `question-difficulty ${currentQuestion.difficulty}`;
-    questionPoints.textContent = currentQuestion.points;
+    if (currentQuestionEl) currentQuestionEl.textContent = quizState.currentQuestionIndex + 1;
+    if (questionText) questionText.textContent = currentQuestion.question;
+    
+    if (questionDifficulty) {
+        questionDifficulty.textContent = currentQuestion.difficulty.charAt(0).toUpperCase() + currentQuestion.difficulty.slice(1);
+        questionDifficulty.className = `question-difficulty ${currentQuestion.difficulty}`;
+    }
+    
+    if (questionPoints) questionPoints.textContent = currentQuestion.points;
     
     // Reset hint
-    questionHint.classList.add('hidden');
-    hintText.textContent = currentQuestion.hint;
-    hintBtn.disabled = false;
+    if (questionHint) questionHint.classList.add('hidden');
+    if (hintText) hintText.textContent = currentQuestion.hint;
+    if (hintBtn) hintBtn.disabled = false;
     
     // Update progress
     const progress = ((quizState.currentQuestionIndex) / quizState.questions.length) * 100;
-    progressFill.style.width = `${progress}%`;
-    progressPercentage.textContent = `${Math.round(progress)}%`;
+    if (progressFill) progressFill.style.width = `${progress}%`;
+    if (progressPercentage) progressPercentage.textContent = `${Math.round(progress)}%`;
     
     // Create answer buttons
-    answersContainer.innerHTML = '';
-    const letters = ['A', 'B', 'C', 'D'];
-    
-    currentQuestion.answers.forEach((answer, index) => {
-        const answerBtn = document.createElement('button');
-        answerBtn.className = 'answer-option';
-        answerBtn.innerHTML = `
-            <div class="answer-letter">${letters[index]}</div>
-            <div class="answer-text">${answer.text}</div>
-        `;
+    if (answersContainer) {
+        answersContainer.innerHTML = '';
+        const letters = ['A', 'B', 'C', 'D'];
         
-        answerBtn.dataset.correct = answer.correct;
-        
-        answerBtn.addEventListener('click', () => selectAnswer(answerBtn));
-        
-        answersContainer.appendChild(answerBtn);
-    });
+        currentQuestion.answers.forEach((answer, index) => {
+            const answerBtn = document.createElement('button');
+            answerBtn.className = 'answer-option';
+            answerBtn.innerHTML = `
+                <div class="answer-letter">${letters[index]}</div>
+                <div class="answer-text">${answer.text}</div>
+            `;
+            
+            answerBtn.dataset.correct = answer.correct;
+            
+            answerBtn.addEventListener('click', () => selectAnswer(answerBtn));
+            
+            answersContainer.appendChild(answerBtn);
+        });
+    }
     
     // Hide next button
-    nextBtn.classList.add('hidden');
-    skipBtn.classList.remove('hidden');
+    if (nextBtn) nextBtn.classList.add('hidden');
+    if (skipBtn) skipBtn.classList.remove('hidden');
     
     // Save current state
     saveQuizState();
@@ -932,21 +582,23 @@ function selectAnswer(selectedBtn) {
     }
     
     // Update UI stats
-    correctCountEl.textContent = quizState.correctAnswers;
-    incorrectCountEl.textContent = quizState.incorrectAnswers;
-    currentScoreEl.textContent = quizState.score;
-    streakCountEl.textContent = quizState.currentStreak;
+    if (correctCountEl) correctCountEl.textContent = quizState.correctAnswers;
+    if (incorrectCountEl) incorrectCountEl.textContent = quizState.incorrectAnswers;
+    if (currentScoreEl) currentScoreEl.textContent = quizState.score;
+    if (streakCountEl) streakCountEl.textContent = quizState.currentStreak;
     
     // Check for achievements
     checkAchievements();
     
     // Show next button
-    nextBtn.classList.remove('hidden');
-    skipBtn.classList.add('hidden');
+    if (nextBtn) nextBtn.classList.remove('hidden');
+    if (skipBtn) skipBtn.classList.add('hidden');
     
     // Stop timer
-    clearInterval(quizState.timer);
-    quizState.timer = null;
+    if (quizState.timer) {
+        clearInterval(quizState.timer);
+        quizState.timer = null;
+    }
     
     // Save state
     saveQuizState();
@@ -955,22 +607,27 @@ function selectAnswer(selectedBtn) {
 // Start timer
 function startTimer() {
     quizState.timeLeft = parseInt(timeLimitSelect.value);
-    timerDisplay.textContent = quizState.timeLeft;
-    timerDisplay.classList.remove('timer-pulse');
+    if (timerDisplay) {
+        timerDisplay.textContent = quizState.timeLeft;
+        timerDisplay.classList.remove('timer-pulse');
+    }
     
     quizState.timer = setInterval(() => {
         quizState.timeLeft--;
         quizState.timeTaken++;
-        timerDisplay.textContent = quizState.timeLeft;
         
-        // Update timer color based on remaining time
-        if (quizState.timeLeft <= 10) {
-            timerDisplay.style.color = '#ef4444';
-            timerDisplay.classList.add('timer-pulse');
-        } else if (quizState.timeLeft <= 20) {
-            timerDisplay.style.color = '#f59e0b';
-        } else {
-            timerDisplay.style.color = '';
+        if (timerDisplay) {
+            timerDisplay.textContent = quizState.timeLeft;
+            
+            // Update timer color based on remaining time
+            if (quizState.timeLeft <= 10) {
+                timerDisplay.style.color = '#ef4444';
+                timerDisplay.classList.add('timer-pulse');
+            } else if (quizState.timeLeft <= 20) {
+                timerDisplay.style.color = '#f59e0b';
+            } else {
+                timerDisplay.style.color = '';
+            }
         }
         
         if (quizState.timeLeft <= 0) {
@@ -1011,12 +668,12 @@ function handleTimeUp() {
     quizState.currentStreak = 0;
     
     // Update UI
-    incorrectCountEl.textContent = quizState.incorrectAnswers;
-    streakCountEl.textContent = quizState.currentStreak;
+    if (incorrectCountEl) incorrectCountEl.textContent = quizState.incorrectAnswers;
+    if (streakCountEl) streakCountEl.textContent = quizState.currentStreak;
     
     showToast('Time\'s up! Moving to next question.', 'warning');
-    nextBtn.classList.remove('hidden');
-    skipBtn.classList.add('hidden');
+    if (nextBtn) nextBtn.classList.remove('hidden');
+    if (skipBtn) skipBtn.classList.add('hidden');
 }
 
 // Handle next question
@@ -1048,8 +705,8 @@ function skipQuestion() {
     quizState.currentStreak = 0;
     
     // Update UI
-    incorrectCountEl.textContent = quizState.incorrectAnswers;
-    streakCountEl.textContent = quizState.currentStreak;
+    if (incorrectCountEl) incorrectCountEl.textContent = quizState.incorrectAnswers;
+    if (streakCountEl) streakCountEl.textContent = quizState.currentStreak;
     
     showToast('Question skipped!', 'info');
     handleNextQuestion();
@@ -1057,13 +714,13 @@ function skipQuestion() {
 
 // Show hint
 function showHint() {
-    questionHint.classList.remove('hidden');
-    hintBtn.disabled = true;
+    if (questionHint) questionHint.classList.remove('hidden');
+    if (hintBtn) hintBtn.disabled = true;
     
     // Deduct points for using hint
     const currentQuestion = quizState.questions[quizState.currentQuestionIndex];
     quizState.score -= Math.floor(currentQuestion.points * 0.1);
-    currentScoreEl.textContent = quizState.score;
+    if (currentScoreEl) currentScoreEl.textContent = quizState.score;
     
     showToast('Hint used! -10% points deducted', 'info');
 }
@@ -1090,32 +747,36 @@ function completeQuiz() {
     const totalTime = formatTime(quizState.timeTaken);
     
     // Update results UI
-    scorePercentage.textContent = `${percentage}%`;
-    finalCorrect.textContent = quizState.correctAnswers;
-    finalTotal.textContent = quizState.questions.length;
-    timeTaken.textContent = totalTime;
-    finalScore.textContent = quizState.score;
+    if (scorePercentage) scorePercentage.textContent = `${percentage}%`;
+    if (finalCorrect) finalCorrect.textContent = quizState.correctAnswers;
+    if (finalTotal) finalTotal.textContent = quizState.questions.length;
+    if (timeTaken) timeTaken.textContent = totalTime;
+    if (finalScore) finalScore.textContent = quizState.score;
     
     // Update progress circle
     const circle = document.querySelector('.progress-ring-fill');
-    const radius = circle.r.baseVal.value;
-    const circumference = radius * 2 * Math.PI;
-    
-    circle.style.strokeDasharray = `${circumference} ${circumference}`;
-    circle.style.strokeDashoffset = circumference;
-    
-    const offset = circumference - (percentage / 100) * circumference;
-    setTimeout(() => {
-        circle.style.strokeDashoffset = offset;
-    }, 100);
+    if (circle) {
+        const radius = circle.r.baseVal.value;
+        const circumference = radius * 2 * Math.PI;
+        
+        circle.style.strokeDasharray = `${circumference} ${circumference}`;
+        circle.style.strokeDashoffset = circumference;
+        
+        const offset = circumference - (percentage / 100) * circumference;
+        setTimeout(() => {
+            circle.style.strokeDashoffset = offset;
+        }, 100);
+    }
     
     // Show achievements
     displayAchievements();
     
     // Show results screen
     hideAllScreens();
-    resultsScreen.classList.remove('hidden-screen');
-    resultsScreen.classList.add('active-screen');
+    if (resultsScreen) {
+        resultsScreen.classList.remove('hidden-screen');
+        resultsScreen.classList.add('active-screen');
+    }
     
     // Clear saved quiz state
     localStorage.removeItem('quizState');
@@ -1144,12 +805,14 @@ function updateUserProfile() {
     }
     
     // Save to localStorage
-    localStorage.setItem('userProfile', JSON.stringify(userProfile));
+    saveUserProfile();
     loadUserProfile();
 }
 
 // Display achievements
 function displayAchievements() {
+    if (!achievementsList) return;
+    
     achievementsList.innerHTML = '';
     
     quizData.achievements.forEach(achievement => {
@@ -1193,7 +856,7 @@ function unlockAchievement(achievementId) {
         userProfile.achievementsUnlocked.push(achievementId);
         const achievement = quizData.achievements.find(a => a.id === achievementId);
         showToast(`Achievement Unlocked: ${achievement.name}!`, 'success');
-        localStorage.setItem('userProfile', JSON.stringify(userProfile));
+        saveUserProfile();
     }
 }
 
@@ -1285,15 +948,19 @@ function shareResults() {
 function showModal(modalType) {
     closeAllModals();
     
+    let modal;
     if (modalType === 'leaderboard') {
+        modal = leaderboardModal;
         updateLeaderboard('daily');
-        leaderboardModal.classList.add('active');
     } else if (modalType === 'profile') {
-        profileModal.classList.add('active');
+        modal = profileModal;
     }
     
-    // Prevent body scrolling while modal is open
-    document.body.style.overflow = 'hidden';
+    if (modal) {
+        modal.classList.add('active');
+        // Prevent body scrolling while modal is open
+        document.body.style.overflow = 'hidden';
+    }
 }
 
 // Close all modals
@@ -1310,6 +977,8 @@ function closeAllModals() {
 // Update leaderboard
 function updateLeaderboard(period) {
     const leaderboardList = document.getElementById('leaderboard-list');
+    if (!leaderboardList) return;
+    
     leaderboardList.innerHTML = '';
     
     // Filter leaderboard based on period (for demo, we use the same data)
@@ -1357,54 +1026,77 @@ function updateLeaderboard(period) {
 
 // Load user profile
 function loadUserProfile() {
-    const savedProfile = localStorage.getItem('userProfile');
-    if (savedProfile) {
-        userProfile = JSON.parse(savedProfile);
-    }
-    
     // Update profile modal
-    document.getElementById('profile-name').textContent = userProfile.name;
-    document.getElementById('profile-level').textContent = `Level ${userProfile.level} Quiz Master`;
-    document.getElementById('profile-score').textContent = userProfile.totalScore.toLocaleString();
-    document.getElementById('profile-quizzes').textContent = userProfile.quizzesCompleted;
+    const profileName = document.getElementById('profile-name');
+    const profileLevel = document.getElementById('profile-level');
+    const profileScore = document.getElementById('profile-score');
+    const profileQuizzes = document.getElementById('profile-quizzes');
+    
+    if (profileName) profileName.textContent = userProfile.name;
+    if (profileLevel) profileLevel.textContent = `Level ${userProfile.level} Quiz Master`;
+    if (profileScore) profileScore.textContent = userProfile.totalScore.toLocaleString();
+    if (profileQuizzes) profileQuizzes.textContent = userProfile.quizzesCompleted;
     
     // Update level progress
-    const levelProgress = (userProfile.experience % 1000) / 10;
-    levelFill.style.width = `${levelProgress}%`;
-    levelPercentage.textContent = `${levelProgress}%`;
+    if (levelFill && levelPercentage) {
+        const levelProgress = (userProfile.experience % 1000) / 10;
+        levelFill.style.width = `${levelProgress}%`;
+        levelPercentage.textContent = `${levelProgress}%`;
+    }
 }
 
 // Check for continue quiz
 function checkContinueQuiz() {
+    const continueBtn = document.getElementById('continue-btn');
+    if (!continueBtn) return;
+    
     const savedState = localStorage.getItem('quizState');
     if (savedState) {
-        const continueBtn = document.getElementById('continue-btn');
-        continueBtn.style.display = 'flex';
-        continueBtn.addEventListener('click', () => {
+        try {
             const state = JSON.parse(savedState);
             if (state.quizStarted && !state.quizCompleted) {
-                quizState = state;
-                // Restore timer if needed
-                if (quizState.timer) {
-                    clearInterval(quizState.timer);
-                    quizState.timer = null;
-                }
-                showCategorySelection();
-                startSelectedQuiz();
+                continueBtn.style.display = 'flex';
+                continueBtn.addEventListener('click', () => {
+                    quizState = state;
+                    // Restore timer if needed
+                    if (quizState.timer) {
+                        clearInterval(quizState.timer);
+                        quizState.timer = null;
+                    }
+                    showCategorySelection();
+                    startSelectedQuiz();
+                });
+                return;
             }
-        });
-    } else {
-        const continueBtn = document.getElementById('continue-btn');
-        continueBtn.style.display = 'none';
+        } catch (e) {
+            console.error('Error parsing saved quiz state:', e);
+        }
     }
+    
+    continueBtn.style.display = 'none';
 }
 
 // Save quiz state
 function saveQuizState() {
-    localStorage.setItem('quizState', JSON.stringify({
-        ...quizState,
-        timer: null // Don't save timer function
-    }));
+    const stateToSave = { ...quizState };
+    // Don't save timer function
+    stateToSave.timer = null;
+    localStorage.setItem('quizState', JSON.stringify(stateToSave));
+}
+
+// Initialize theme
+function initializeTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    const themeIcon = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    
+    if (themeToggle) {
+        themeToggle.innerHTML = `<i class="${themeIcon}"></i>`;
+    }
+    
+    if (mobileThemeToggle) {
+        mobileThemeToggle.innerHTML = `<i class="${themeIcon}"></i> ${savedTheme === 'dark' ? 'Light' : 'Dark'} Mode`;
+    }
 }
 
 // Toggle theme
@@ -1414,7 +1106,10 @@ function toggleTheme() {
     
     document.documentElement.setAttribute('data-theme', newTheme);
     const icon = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-    themeToggle.innerHTML = `<i class="${icon}"></i>`;
+    
+    if (themeToggle) {
+        themeToggle.innerHTML = `<i class="${icon}"></i>`;
+    }
     
     if (mobileThemeToggle) {
         mobileThemeToggle.innerHTML = `<i class="${icon}"></i> ${newTheme === 'dark' ? 'Light' : 'Dark'} Mode`;
@@ -1425,6 +1120,8 @@ function toggleTheme() {
 
 // Show toast notification
 function showToast(message, type = 'info') {
+    if (!toast) return;
+    
     const toastIcon = toast.querySelector('.toast-icon');
     const toastMessage = toast.querySelector('.toast-message');
     
@@ -1448,11 +1145,16 @@ function showToast(message, type = 'info') {
             borderColor = '#4361ee';
     }
     
-    toastIcon.className = `toast-icon ${iconClass}`;
-    toastIcon.style.color = borderColor;
-    toastMessage.textContent = message;
-    toast.style.borderLeftColor = borderColor;
+    if (toastIcon) {
+        toastIcon.className = `toast-icon ${iconClass}`;
+        toastIcon.style.color = borderColor;
+    }
     
+    if (toastMessage) {
+        toastMessage.textContent = message;
+    }
+    
+    toast.style.borderLeftColor = borderColor;
     toast.classList.remove('hidden');
     
     // Auto hide after 5 seconds
@@ -1474,13 +1176,4 @@ function formatTime(seconds) {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, '0')}`;
-}
-
-// Initialize theme
-const savedTheme = localStorage.getItem('theme') || 'light';
-document.documentElement.setAttribute('data-theme', savedTheme);
-const themeIcon = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-themeToggle.innerHTML = `<i class="${themeIcon}"></i>`;
-if (mobileThemeToggle) {
-    mobileThemeToggle.innerHTML = `<i class="${themeIcon}"></i> ${savedTheme === 'dark' ? 'Light' : 'Dark'} Mode`;
 }
